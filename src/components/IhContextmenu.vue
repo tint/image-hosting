@@ -69,7 +69,7 @@ export default {
       if (!commands?.length) return;
       commands[0].focus();
     },
-    circle(target, shiftDown) {
+    setFocusOnCirculation(target, shiftDown) {
       const focused = target.closest(".ih-contextmenu-command");
       if (focused == null || !this.$el.contains(focused)) {
         this.$emit("close");
@@ -94,7 +94,7 @@ export default {
           this.$emit("close");
         } else if (event.code === "Tab") {
           event.preventDefault();
-          this.circle(event.target, event.shiftKey);
+          this.setFocusOnCirculation(event.target, event.shiftKey);
         }
       };
       window.addEventListener("keydown", tabKeydownListener, true);
