@@ -8,6 +8,7 @@
           class="ih-contextmenu-command"
           @click.prevent.stop="$emit('click', menu.key, data)"
           ref="command"
+          :data-key="menu.key"
         >
           <span class="ih-contextmenu-icon" v-if="hasIcon">
             <ih-icon :name="menu.icon" v-if="menu.icon" />
@@ -68,12 +69,32 @@ export default {
       if (!commands?.length) return;
       commands[0].focus();
     },
+    circle(target, shiftDown) {
+      const focused = target.closest(".ih-contextmenu-command");
+      if (focused == null || !this.$el.contains(focused)) {
+        this.$emit("close");
+      } else {
+        const commands = this.$refs.command;
+        const isCommand = (c) => c.dataset.key === target.dataset.key;
+        const index = commands.findIndex(isCommand);
+        const nextIndex = this.getNextFocusIndex(index, shiftDown);
+        commands[nextIndex].focus();
+      }
+    },
+    getNextFocusIndex(index, shiftDown) {
+      const maxIndex = this.$refs.command.length - 1;
+      if (shiftDown) return index === 0 ? maxIndex : index - 1;
+      return index < maxIndex ? index + 1 : 0;
+    },
     bindKeyboardEvent() {
       const window = this.$el.ownerDocument.defaultView;
       const tabKeydownListener = (event) => {
         if (event.code === "Escape") {
           this.$emit("escape");
           this.$emit("close");
+        } else if (event.code === "Tab") {
+          event.preventDefault();
+          this.circle(event.target, event.shiftKey);
         }
       };
       window.addEventListener("keydown", tabKeydownListener, true);
@@ -110,6 +131,7 @@ export default {
 
   updated() {
     this.requestLayout();
+    this.requestFocus();
   },
 };
 </script>

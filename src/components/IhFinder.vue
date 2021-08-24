@@ -72,6 +72,18 @@ export default {
   data() {
     return {
       ensuredMenus: this.menus,
+      tools: [
+        { command: "upload", icon: "upload", text: "上传" },
+        { command: "newFolder", icon: "folder-plus", text: "创建子文件夹" },
+        { command: "rename", icon: "folder-plus", text: "重命名" },
+        { command: "fullScreen", icon: "folder-plus", text: "全屏" },
+        { command: "delete", icon: "folder-plus", text: "删除" },
+        { command: "move", icon: "move", text: "移动" },
+        { command: "copy", icon: "copy", text: "复制" },
+        { command: "edit", icon: "edit", text: "编辑" },
+        { command: "download", icon: "download", text: "下载" },
+        { command: "lookup", icon: "lookup", text: "查看" },
+      ],
       thumbData: {
         selected: [],
         focused: null,
